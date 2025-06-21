@@ -16,7 +16,7 @@ def eyecheck():
     if not image_data:
         return jsonify({"error": "No image provided"}), 400
 
-    # ✅ Dummy AI logic
+    # 👁️ Dummy AI response
     result = {
         "status": "success",
         "data": {
@@ -26,7 +26,9 @@ def eyecheck():
         }
     }
 
-    # ✅ FIX — explicitly set Content-Length header
+    # ✅ FIX: Set correct Content-Length
     response = make_response(jsonify(result))
-    response.headers["Content-Length"] = str(len(response.get_data()))
+    response.headers["Content-Type"] = "application/json"
+    response_data = response.get_data()
+    response.headers["Content-Length"] = str(len(response_data))
     return response
