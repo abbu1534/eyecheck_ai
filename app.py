@@ -10,7 +10,10 @@ def eyecheck():
     if received_key != API_KEY:
         return jsonify({"error": "Unauthorized"}), 401
 
-    # Dummy response
+    data = request.get_json()
+    if not data or 'image' not in data:
+        return jsonify({"error": "No image provided"}), 400
+
     result = {
         "status": "success",
         "data": {
@@ -20,7 +23,7 @@ def eyecheck():
         }
     }
 
-    # ✅ Fix: Add Content-Length manually
+    # ✅ Add this line — it's **mandatory**
     response = make_response(jsonify(result))
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response
