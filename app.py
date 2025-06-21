@@ -47,8 +47,8 @@ def eyecheck():
         result = {
             "status": "success",
             "data": {
-                "eye_redness": eye_redness,
-                "fatigue_detected": fatigue,
+                "eye_redness": bool(eye_redness),
+                "fatigue_detected": bool(fatigue),
                 "suggestion": "Take a short break and wash your eyes with cold water." if fatigue else "Eyes look okay."
             }
         }
