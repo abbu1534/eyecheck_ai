@@ -41,14 +41,14 @@ def eyecheck():
         total_pixels = red_mask.size
         redness_ratio = red_pixels / total_pixels
 
-        eye_redness = redness_ratio > 0.03
-        fatigue = redness_ratio > 0.05
+        eye_redness = bool(redness_ratio > 0.03)
+        fatigue = bool(redness_ratio > 0.05)
 
         result = {
             "status": "success",
             "data": {
-                "eye_redness": bool(eye_redness),
-                "fatigue_detected": bool(fatigue),
+                "eye_redness": eye_redness,
+                "fatigue_detected": fatigue,
                 "suggestion": "Take a short break and wash your eyes with cold water." if fatigue else "Eyes look okay."
             }
         }
