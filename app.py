@@ -23,10 +23,11 @@ def eyecheck():
         }
     }
 
-    # ✅ Add this line — it's **mandatory**
+    # ✅ Required for Laravel cURL to work
     response = make_response(jsonify(result))
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    # ✅ Do not use port 5000 on Render
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
