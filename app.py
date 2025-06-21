@@ -11,7 +11,6 @@ API_KEY = os.environ.get("EYE_API_KEY", "c20847490727ab12a256d33888ab738b")
 
 @app.route('/api/eyecheck', methods=['POST'])
 def eyecheck():
-    # API key validation
     received_key = request.headers.get('X-API-KEY')
     if received_key != API_KEY:
         return jsonify({"error": "Unauthorized"}), 401
@@ -22,16 +21,13 @@ def eyecheck():
         return jsonify({"error": "No image provided"}), 400
 
     try:
-        # Decode base64 image to OpenCV image
         image_data = base64.b64decode(image_b64)
         image = Image.open(BytesIO(image_data)).convert("RGB")
         image_np = np.array(image)
         image_cv = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
 
-        # Convert to HSV for red detection
         hsv = cv2.cvtColor(image_cv, cv2.COLOR_BGR2HSV)
 
-        # Redness detection (HSV range for red)
         lower_red1 = np.array([0, 70, 50])
         upper_red1 = np.array([10, 255, 255])
         lower_red2 = np.array([170, 70, 50])
@@ -42,10 +38,9 @@ def eyecheck():
         red_mask = mask1 + mask2
 
         red_pixels = np.sum(red_mask > 0)
-        total_pixels = red_mask.shape[0] * red_mask.shape[1]
+        total_pixels = red_mask.size
         redness_ratio = red_pixels / total_pixels
 
-        # If more than 3% pixels are red, mark as red eyes
         eye_redness = redness_ratio > 0.03
         fatigue = redness_ratio > 0.05
 
